@@ -1,0 +1,98 @@
+
+스프링을 이용한 홈페이지 만들기
+
+-웹 개발 언어
+-PHP,jsp,.net 등등
+-전자정부프레임워크(정부에서 표준안을 만듬, 유지보수가 편함)
+-MVC 모델을 통해 구분
+
+프론트
+- 화면 구성
+- HTML, CSS,JS
+
+백엔드
+- 화면에 뿌려줄 데이터를 선정
+- 데이터를 처리
+- 자바
+- SQL - MySQL
+
+github - 개발자들이 자신의 코드를 온라인상에 올려서 관리하거나 개인이 유지관리하기 편하게 하기 위해
+
+git kraken - 다운 후 진행
+
+
+GitKraken Token copy
+
+eJwtzLFuwjAUheF38Zwhxgkm3tqJoYgKwdDJsn0vwY2JjZ0UEsS710LZjo70/U+ijMGUjr7DnghyLjWrcd3QugJaUk1hA7VacwM1VLpsmhI4A8VIQUL0fxYwLvS5lOSwpNqLlx8T5duKuePMPsfv2+F3N18mvvqZq4P/2rPbSfE2p95EDlPA7DSqiDG/yfj3oeBqexFG7ayRHU5FRAXCxzaP4IsxYRR4VdYVdx+7s/P3jPERbMQk1UBEPzr3ev0DRLtP/w==
+
+
+깃헙 사이트에 저장소를 만들고 저장소에서 내 PC에 파일(clone)을 가져온다
+
+1. pc에서 변경하고 나서 깃 이력에 남겨야함
+2. 그 후 깃헙에 업데이트
+
+
+cmd에서 자바 버전 확인
+java -version
+javac -version
+
+자바설정(인터넷 검색)
+내컴퓨터 속성 - 고급시스템설정 - 환경변수
+(시스템 환경변수 편집)
+
+프로그램 - 컴퓨터가 인식할 수 있는 명령어의 나열
+
+프로그래밍 - 프로그램을 작성하는 과정 = 코딩
+
+
+자바
+1.운영체제에 독립적
+2. 사용하기 쉬운 언어
+-다른언어의 단점보완(포인터,메모리관리)
+-객체 지향언어
+-능률적이고 명확한 코드 작성 가능
+3.자동메모리 관리
+4.네트워크와 분솬환경 지원
+5.멀티쓰레드 지원
+
+
+데이터 저장 단위 - 저장공간이 제한적이기 때무에 저장크기에 대한 기준과 CPU가 데이터를 처리할 때 일정한 기준 필요
+
+비트 - 컴퓨터가 나타내는 데이터의 저장 최소 단위로서 2진수 값 하나를 저장할 수 있는 메모리 공간을 의미
+
+바이트 - 데이터 처리 또는 문자의 최소단위로써 8개의 비트가 모여 하나의 바이트가 구성됨
+
+변수 명명 규칙
+1. 대소문자가 구분되며 길이 제한이 없다.
+2.예약어를 사용하면 안된다.
+ex)true, final, String
+3.숫자로 시작하면 안된다.
+ex) age1은 가능하지만 1age는 불가능
+4.특수문자는 '_'와 '$'만을 허용한다.
+- '$'는 내부 클래스에서 사용
+- '_' 사용시 컴파일 에러는 없지만 관례상 사용하지 않는 것이 좋음
+ex)sh@rp는 불가능하지만 $harp는 가능
+5.여러단어 이름은 단어의 첫 글자를 대문자로 한다.
+단, 첫 시작 글자는 소문자로 하는 것이 관례이다.
+ex) ageOfVempire, userName
+6. 변수명은 의미 있게 짓는게 좋음
+
+window - preferences - general - workspace - Text file encoding - other - UTF8로 바꾸고
+열려있는 창들을 ctrl + z후 저장
+
+.gitignore 파일에 
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+부분에 아래 3개 입력
+
+.classpath
+.gitignore
+java_lhk/.project
+
+
+
+
+집가서 할 일
+
+1. gitkraken 다운받기
