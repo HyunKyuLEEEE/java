@@ -45,7 +45,7 @@ public class ArrayRandomEx01 {
 		sc.close();
 		
 		
-		/* 내가 한것
+		/* 
 		Scanner sc = new Scanner(System.in);
 		System.out.print("정수를 입력하세요 : ");
 		int result = sc.nextInt();
