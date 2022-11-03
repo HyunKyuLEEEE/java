@@ -1,4 +1,4 @@
-package src.day01;
+package day01;
 
 public class HelloWorld {
 	// 프로그램이 시작하려면 main이 있어야한다.
