@@ -1,6 +1,6 @@
 package day08;
 
-public class MehotdArguments {
+public class MethodArguments {
 	public static void main(String[] args) {
 		/* 매개변수의 개수를 다양하게 하고 싶을 때 가변 인자를 사용
 		 * 매개변수에 자료형... 배열명 => 메소드에서 배열처럼 사용
