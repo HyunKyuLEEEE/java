@@ -33,13 +33,13 @@ public class MethodBaseballGameEx01 {
 		int []com = createRandomArray(min, max, size);
 		printArray(com);
 		
-		Scanner scan = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		
 		int strike = 0, ball;
 		do {
 			//2.사용자가 숫자를 선택
 			System.out.print("입력 : ");
-			int []user = scanArray(scan, size);
+			int []user = scanArray(sc, size);
 			
 			//3.판별
 			// => 스트라이크를 판별하는 기능을 구현 
@@ -51,7 +51,7 @@ public class MethodBaseballGameEx01 {
 			//2~3을 반복(3S가 될때까지)
 		}while(strike < 3);
 		System.out.println("게임 종료.");
-		scan.close();
+		sc.close();
 	}
 	/**
 	 * 기능 : strike와 ball의 개수가 주어지면 콘솔에 결과를 출력하는 메소드
@@ -120,13 +120,13 @@ public class MethodBaseballGameEx01 {
 	 * @param size	입력받을 정수의 개수
 	 * @return 입력받은 값들이 저장된 배열
 	 * */
-	public static int[] scanArray(Scanner scan, int size) {
+	public static int[] scanArray(Scanner sc, int size) {
 		if(size <= 0) {
 			return null;
 		}
 		int [] arr = new int[size];
 		for(int i = 0; i < size; i++) {
-			arr[i] = scan.nextInt();
+			arr[i] = sc.nextInt();
 		}
 		return arr;
 	}
@@ -136,8 +136,8 @@ public class MethodBaseballGameEx01 {
 			return 0;
 		}
 		int count = 0;
-		for(int tmp : arr1) {
-			if(contains(arr2, tmp)) {
+		for(int temp : arr1) {
+			if(contains(arr2, temp)) {
 				count++;
 			}
 		}
@@ -175,9 +175,9 @@ public class MethodBaseballGameEx01 {
 	}
 	public static int random(int min, int max) {
 		if(min > max) {
-			int tmp = min;
+			int temp = min;
 			min = max;
-			max = tmp;
+			max = temp;
 		}
 		return (int)(Math.random()*(max - min + 1) + min);
 	}
@@ -185,8 +185,8 @@ public class MethodBaseballGameEx01 {
 		if(arr == null || arr.length == 0) {
 			return false;
 		}
-		for(int tmp : arr) {
-			if(num == tmp) {
+		for(int temp : arr) {
+			if(num == temp) {
 				return true;
 			}
 		}
