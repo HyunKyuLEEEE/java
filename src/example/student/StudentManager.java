@@ -2,6 +2,8 @@ package example.student;
 
 import java.util.Scanner;
 
+import day12.ProgramManager;
+
 public class StudentManager {
 
 	private Scanner scan;
