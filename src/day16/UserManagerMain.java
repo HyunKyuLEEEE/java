@@ -32,42 +32,34 @@ public class UserManagerMain {
 				}
 				break;
 			case 2:
-				if(!search(list)) {
+				Member1 searchTemp = searchMember(list);
+				if(searchTemp == null) {
 					printStr("아이디 또는 비밀번호가 일치하지 않습니다.");
+				}else {
+					System.out.println(searchTemp);
 				}
 				break;
 			case 3:
-				System.out.println("수정 예정");
+				//수정할 회원 아이디와 비밀번호를 입력하여 욀치하는 회원정보를 가져옴
+				Member1 updateTemp = searchMember(list);
+				
+				//일치 하지 않으면 건너뜀
+				if(!updateMember(list, updateTemp)) {
+					printStr("아이디 또는 비밀번호가 잘못됐습니다.");
+				}else {
+					printStr("회원정보 수정이 완료됐습니다.");
+				}
+				
 				break;
 			case 4:
-				//아이디 입력
-				System.out.println("삭제할 회원 정보를 입력하세요.");
-				System.out.print("아이디 : ");
-				String id = sc.next();
-				//비밀번호 입력
-				System.out.print("비밀번호 : ");
-				String pw = sc.next();
-				
-				//아이디 비밀번호를 이용하여 객체를 만듬
-				Member1 member = new Member1(id, pw);
-				
-				//회원리스트에서 아이디가 같은 회원 정보를 가져옴
-				int index = list.indexOf(member);
-				if(index == -1) {
-					continue;
+				//삭제할 회원 아이디와 비밀번호를 입력하여 일치하는 회원정보를 가져옴 
+				Member1 deleteTemp = searchMember(list);
+				//일치하는 회원 정보가 있으면 삭제
+				if(list.remove(deleteTemp)){
+					printStr("삭제가 완료됐습니다.");
+				}else {
+					printStr("아이디 또는 비밀번호가 일치하지 않습니다.");					
 				}
-				
-				Member1 temp = list.get(index);
-				//가져온 회원 정보의 비밀번호와 입력한 비밀번호를 비교하여 다르면 종료
-				if(!temp.getPw().equals(member.getPw())){
-					continue;
-				}
-				//회원 정보 삭제
-				System.out.println(temp);
-				list.remove(index);
-				//같으면 회원 정보를 보여줌
-				
-				
 				break;
 			case 5:
 				System.out.println("프로그램 종료");
@@ -113,6 +105,7 @@ public class UserManagerMain {
 			return false;
 		}
 		//아니면 회원 리스트에 member 객체를 추가
+		list.add(member);
 		return true;
 	}	
 	public static void printStr(String str) {
@@ -120,7 +113,7 @@ public class UserManagerMain {
 		System.out.println(str);
 		System.out.println("--------------");
 	}
-	public static boolean search(ArrayList<Member1> list) {
+	public static Member1 searchMember(ArrayList<Member1> list) {
 		Scanner sc = new Scanner(System.in);
 		//이이디 입력
 		System.out.println("검색할 회원 정보를 입력하세요.");
@@ -137,16 +130,68 @@ public class UserManagerMain {
 		//회원리스트에서 아이디가 같은 회원 정보를 가져옴
 		int index = list.indexOf(member);
 		if(index == -1) {
-			return false;
+			return null;
 		}
 		Member1 temp = list.get(index);
 		//가져온 회원 정보의 비밀번호와 입력한 비밀번호를 비교하여 다르면 종료
 		if(!temp.getPw().equals(member.getPw())) {
+			return null;
+		}
+		return temp;
+	}
+	
+	public static boolean deleteMember(ArrayList<Member1> list) {
+		Scanner sc = new Scanner(System.in);
+		//삭제할 회원 아이디와 비밀번호를 입력하여 일치하는 회원정보를 가져옴 
+		//아이디 입력
+		System.out.println("삭제할 회원 정보를 입력하세요.");
+		System.out.print("아이디 : ");
+		String id = sc.next();
+		//비밀번호 입력
+		System.out.print("비밀번호 : ");
+		String pw = sc.next();
+		
+		//아이디 비밀번호를 이용하여 객체를 만듬
+		Member1 member = new Member1(id, pw);
+		
+		//회원리스트에서 아이디가 같은 회원 정보를 가져옴
+		int index = list.indexOf(member);
+		if(index == -1) {
 			return false;
 		}
-		//같으면 회원정보를 보여줌
-		System.out.println(temp);
+		
+		Member1 temp = list.get(index);
+		//가져온 회원 정보의 비밀번호와 입력한 비밀번호를 비교하여 같으면 삭제
+		if(!temp.getPw().equals(member.getPw())){
+			return false;
+		}
+		list.remove(index);
+		printStr("회원 정보가 삭제되었습니다.");
 		return true;
+		
+	}
+
+	public static boolean updateMember(ArrayList<Member1> list, Member1 updateTemp) {
+		if(updateTemp == null) {
+			return false;
+		}
+		Scanner sc = new Scanner(System.in);
+		//일치하는 회원 정보가 있으면 비밀번호, 이름, 주민번호, 나이를 입력받고
+		System.out.println("수정할 회원 정보를 입력하세요.");
+		System.out.print("비밀번호 : ");
+		String pw = sc.next();
+		System.out.print("이름 : ");
+		String name = sc.next();
+		System.out.print("주민번호 : ");
+		String residentNumber = sc.next();
+		System.out.print("나이 : ");
+		int age = sc.nextInt();
+		
+		//입력받은 회원 정보를 이용하여 updateTemp를 수정합니다.
+		updateTemp.update(pw, name, residentNumber, age);
+		return true;
+		
 	}
 }
 
+	
