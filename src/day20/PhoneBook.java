@@ -3,7 +3,7 @@ package day20;
 import lombok.Data;
 
 @Data
-public class PhoneBook {
+public class PhoneBook{
 		
 	private String phoneNum, phoneName;
 
@@ -14,7 +14,7 @@ public class PhoneBook {
 
 	@Override
 	public String toString() {
-		return "[" + phoneNum + " | " + phoneName + "]";
+		return  phoneNum + " | " + phoneName;
 	}
 	
 }

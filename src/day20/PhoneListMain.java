@@ -103,6 +103,8 @@ public class PhoneListMain {
 					yN = sc.next().charAt(0);
 					
 				}while(yN != 'n' && yN != 'N');
+				PhoneBook phoneBook = new PhoneBook(phoneNum, phoneName);
+				listBook.add(phoneBook);
 				//전화번호부에 추가 => PhoneBook 개체를 생성(이름,직장)(클래스)
 				sc.nextLine();
 				PhoneNumber phoneNumber = new PhoneNumber(phoneNum, phoneName, lastName, firstName, company, listBook);
