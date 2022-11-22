@@ -122,7 +122,7 @@ public class AttendanceMain {
 			updateStudent(stds);
 			break;
 		case 3:
-			//deleteStudent(stds);
+			deleteStudent(stds);
 			break;
 		case 4:
 			printStr("취소 했습니다.");
