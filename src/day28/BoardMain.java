@@ -1,5 +1,11 @@
 package day28;
 
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -36,10 +42,12 @@ public class BoardMain {
 	private static Scanner sc = new Scanner(System.in);
 	private static List<Member> memberList = new ArrayList<Member>();
 	private static List<Object> boardList = new ArrayList<Object>();
-	private static List<String> categoryList = Arrays.asList("공지", "자유");
-	private static Member user = new Member(null, null);
+	private static List<String> categoryList = new ArrayList<String>();
+	private static Member user;
 	public static void main(String[] args) {
 		int menu = -1;
+		loadMember("member.txt");
+		loadCategory("category.txt");
 		do {
 			try {
 				printMenu();
@@ -54,7 +62,60 @@ public class BoardMain {
 				printStr(e.getMessage());
 			}
 		}while(menu != 4);
-
+		saveMember("member.txt");
+		saveCategory("category.txt");
+	}
+	private static void saveCategory(String fileName) {
+		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+			for(String category  : categoryList) {
+				oos.writeObject(category);
+			}
+			printStr("저장 완료");
+		} catch(IOException e) {
+			printStr("저장 실패");
+		}
+	}
+	private static void loadCategory(String fileName) {
+		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+			while(true) {
+				String category = (String)ois.readObject();
+				categoryList.add(category);
+			}
+		} catch(EOFException e) {
+			if(categoryList.size() == 0)
+				categoryList = new ArrayList<String>(Arrays.asList("공지", "자유"));
+			printStr("불러오기 성공");
+		} catch(IOException e) {
+			printStr("불러오기 실패");
+		} catch(ClassNotFoundException e) {
+			printStr("불러오기 실패");
+		} 	
+	}
+	private static void saveMember(String fileName) {
+		if(memberList.size() == 0)
+			return;
+		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+			for(Member member : memberList) {
+				oos.writeObject(member);
+			}
+			printStr("저장 완료");
+		} catch(IOException e) {
+			printStr("저장 실패");
+		}
+	}
+	private static void loadMember(String fileName) {
+		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+			while(true) {
+				Member member = (Member)ois.readObject();
+				memberList.add(member);
+			}
+		} catch(EOFException e) {
+			printStr("불러오기 성공");
+		} catch(IOException e) {
+			printStr("불러오기 실패");
+		} catch(ClassNotFoundException e) {
+			printStr("불러오기 실패");
+		} 	
 	}
 	private static void printStr(String str) {
 		System.out.println(str);
@@ -92,34 +153,113 @@ public class BoardMain {
 	}
 	private static void categoryMenu() {
 		//관리자 체크 => 관리자가 아니면 메인 메뉴로
-		
-		//서브 메뉴를 출력
-		
-		//서브 메뉴 선택 및 선택한 서브 메뉴에 맞는 기능 실행
-			//1. 카테고리 추가
-				//새 카테고리명 입력
-			
-				//기존 카테고리에 있는지 확인하여 없으면 추가
-				
+		if(!isAdmin()) {
+			return;
+		}
+		int subMenu = -1;
+		do {
+			//서브 메뉴를 출력
+			printSubMenu(3);
+			//서브 메뉴 선택 및 선택한 서브 메뉴에 맞는 기능 실행
+			subMenu = sc.nextInt();
+			sc.nextLine();
+			printBar();
+			runCategoryMenu(subMenu);
+		}while(subMenu != 5);
+	}
+	private static void runCategoryMenu(int subMenu) {
+		switch(subMenu) {
+		//1. 카테고리 추가
+		case 1:
+			insertCategory();
+			break;
 			//2. 카테고리 수정
-				//수정할 카테고리명 입력
+		case 2:
+			updateCategory();
+			break;	
+		//3. 카테고리 삭제
+		case 3:
+			deleteCategory();
+			break;
+		//4. 카테고리 확인
+		case 4:
+			printCategory();
+			break;
+		//5. 이전
+		case 5:
+			printStr("이전 메뉴로 돌아갑니다.");
+			break;
+		default:
+			printStr("잘못된 메뉴를 선택했습니다.");
+		}
 		
-				//기존 카테고리에 있으면 
-		
-					//새 카테고리명 입력
-				
-					//기존 카테고리에 있는지 확인하여 없으면 수정
-					
-			//3. 카테고리 삭제
-				//삭제할 카테고리명 입력
-		
-				//기존 카테고리에 있으면 삭제
-		
-			//4. 카테고리 확인
-				//모든 카테고리 출력
-				
-			//5. 이전
-		
+	}
+	private static void printCategory() {
+		//모든 카테고리 출력
+		if(categoryList.size() == 0) {
+			printStr("등록된 카테고리가 없습니다.");
+			return;
+		}
+		for(int i = 0; i < categoryList.size(); i++) {
+			System.out.println(i+1+". " + categoryList.get(i));
+		}
+	}
+	private static void deleteCategory() {
+		//삭제할 카테고리명 입력
+		System.out.print("카테고리명 : ");
+		String category = sc.nextLine();
+		printBar();
+		//기존 카테고리에 있으면 삭제
+		if(categoryList.remove(category)) {
+			printStr("카테고리를 삭제했습니다.");
+			return;
+		}
+		printStr("등록되지 않은 카테고리입니다.");
+	}
+	private static void updateCategory() {
+		//수정할 카테고리명 입력
+		System.out.print("카테고리명 : ");
+		String category = sc.nextLine();
+		printBar();
+		//기존 카테고리에 없으면 
+		if(!categoryList.contains(category)) {
+			printStr("등록되지 않은 카테고리입니다.");
+			return;
+		}
+		//새 카테고리명 입력
+		System.out.print("카테고리명 : ");
+		String newCategory = sc.nextLine();
+		printBar();
+		//기존 카테고리에 있는지 확인하여 없으면 수정
+		if(!categoryList.contains(newCategory)) {
+			categoryList.remove(category);
+			categoryList.add(newCategory);
+			printStr("카테고리 수정에 성공했습니다.");
+			return;
+		}
+
+		printStr("이미 등록된 카테고리입니다.");
+	}
+	private static void insertCategory() {
+		//새 카테고리명 입력
+		System.out.print("카테고리명 : ");
+		String category = sc.nextLine();
+		printBar();
+		//기존 카테고리에 있는지 확인하여 없으면 추가
+		if(categoryList.indexOf(category) == -1) {
+			categoryList.add(category);
+			printStr("새 카테고리를 추가했습니다.");
+			return;
+		}
+		printStr("이미 있는 카테고리입니다.");
+	}
+	
+	private static boolean isAdmin() {
+		if(user == null || user.getAuthority() != Authority.ADMIN) {
+			printStr("관리자가 아닙니다. 해당 기능을 이용할 수 없습니다.");
+			return false;
+		}
+		return true;
 	}
 	private static void boardMenu() {
 		//서브 메뉴를 출력
@@ -133,22 +273,20 @@ public class BoardMain {
 				//게시글을 등록
 				
 			//2. 게시글 수정
-				//회원 체크 => 회원(로그인한 사용자)이 아니면 게시글 등록 못함
-		
 				//수정할 게시글 번호 입력
 		
 				//해당 게시글이 존재하지 않거나 작성자가 회원과 같지 않으면 수정 불가
+					//작성자 체크 => 회원(로그인한 사용자)이 아니면 게시글 등록 못함
 				
 				//게시글 정보(제목, 내용) 입력
 		
 				//게시글을 수정
 				
 			//3. 게시글 삭제
-				//회원 체크 => 회원(로그인한 사용자)이 아니면 게시글 등록 못함
-				
 				//삭제할 게시글 번호 입력
 		
 				//해당 게시글이 존재하지 않거나 작성자가 회원과 같지 않으면 삭제 불가
+					//작성자 체크 => 회원(로그인한 사용자)이 아니면 게시글 등록 못함
 				
 				//해당 게시글을 삭제
 				
@@ -182,37 +320,22 @@ public class BoardMain {
 			//서브 메뉴 선택 및 선택한 서브 메뉴에 맞는 기능 실행 => 반복
 			subMenu = sc.nextInt();
 			sc.nextLine();
-			runMemberMenu(subMenu);
-				
+			subMenu = runMemberMenu(subMenu);
 		}while(subMenu != 3);
 	}
 	
-	private static void runMemberMenu(int subMenu) {
-		Member member = null;
+	private static int runMemberMenu(int subMenu) {
 		switch(subMenu) {
 		//1. 회원 가입
 		case 1:
-			//회원 정보 입력
-			System.out.println("회원 정보 입력");
-			member = inputMember();
-			//가입된 아이디인지 체크
-			if(isMember(member)) {
-				printStr("이미 가입된 아이디입니다.");
-				return;
-			}
-			//가입된 아이디가 아니면 회원 가입 진행
-			memberList.add(member);
-			System.out.println(memberList);
+			signup();
 			break;
 		//2. 로그인
 		case 2:
-			//회원 정보 입력(아이디,비밀번호)
-			System.out.println("로그인 정보 입력");
-			member = inputMember();
-			//일치하는 회원이 있으면 회원 정보를 가져옴(로그인 성공)
-			
+			login();
 			//로그인 성공하면 서브 메뉴를 3으로 수정하여 자동으로 메인으로 이동하게 함
-				
+			if(user != null)
+				return 3;
 			break;
 		//3. 이전
 		case 3:
@@ -221,7 +344,35 @@ public class BoardMain {
 		default:
 			printStr("잘못된 메뉴를 선택했습니다.");
 		}
+		return subMenu;
+	}
+	private static void login() {
+		//회원 정보 입력(아이디,비밀번호)
+		System.out.println("로그인 정보 입력");
+		Member member = inputMember();
+		//일치하는 회원이 있으면 회원 정보를 가져옴(로그인 성공)
+		int index = memberList.indexOf(member);
+		if(index == -1) {
+			printStr("로그인 실패");
+			return;
+		}
+		user = memberList.get(index);
+		printStr("로그인 성공");
+			
 		
+	}
+	private static void signup() {
+		//회원 정보 입력
+		System.out.println("회원 정보 입력");
+		Member member = inputMember();
+		//가입된 아이디인지 체크
+		if(isMember(member)) {
+			printStr("이미 가입된 아이디입니다.");
+			return;
+		}
+		//가입된 아이디가 아니면 회원 가입 진행
+		memberList.add(member);
+		printStr("회원 가입이 완료되었습니다.");
 	}
 	private static boolean isMember(Member member) {
 		if(member == null)

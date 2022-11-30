@@ -1,11 +1,13 @@
 package day28;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Data;
 
 @Data
-public class Member {
+public class Member implements Serializable {
+	private static final long serialVersionUID = -8129425427566287306L;
 	private String id, pw;
 	private Date joinDate;
 	private Authority authority;
