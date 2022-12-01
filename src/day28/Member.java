@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class Member implements Serializable {
+	
 	private static final long serialVersionUID = -8129425427566287306L;
 	private String id, pw;
 	private Date joinDate;
