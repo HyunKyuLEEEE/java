@@ -37,6 +37,7 @@ public class Board {
 			return false;
 		return true;
 	}
+	
 	@Override
 	public String toString() {
 		return num + " | " + title + " | " + writer;
