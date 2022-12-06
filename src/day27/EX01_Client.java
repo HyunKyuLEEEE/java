@@ -14,7 +14,7 @@ public class EX01_Client {
 		try {
 			socket = new Socket();
 			System.out.println("[연결 시도 중]");
-			socket.connect(new InetSocketAddress("localhost",5001));
+			socket.connect(new InetSocketAddress("서버 IP 주소",5001));
 			System.out.println("[연결 성공]");
 			send(socket,"학생");
 			recieve(socket);
