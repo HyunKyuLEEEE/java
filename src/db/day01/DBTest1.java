@@ -31,6 +31,7 @@ public class DBTest1 {
         ArrayList<Student1> list = null;
         con = connect(url, id, pw);
         
+        
         try {
 			stmt = con.createStatement();
 			
